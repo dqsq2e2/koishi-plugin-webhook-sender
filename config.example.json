@@ -1,0 +1,78 @@
+{
+  "webhooks": [
+    {
+      "command": "sign",
+      "description": "每日签到",
+      "url": "https://api.example.com/daily-sign",
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer your-api-token",
+        "X-User-QQ": "{QQ}"
+      },
+      "body": {
+        "user_id": "{QQ}",
+        "action": "daily_sign",
+        "platform": "qq"
+      },
+      "timeout": 5000,
+      "successMessage": "签到成功！",
+      "errorMessage": "签到失败，请稍后重试"
+    },
+    {
+      "command": "check-status",
+      "description": "查看用户状态",
+      "url": "https://api.example.com/user/{QQ}/status",
+      "method": "GET",
+      "headers": {
+        "X-Api-Key": "your-api-key"
+      },
+      "body": {
+        "format": "json",
+        "include_details": true
+      },
+      "successMessage": "状态查询成功",
+      "errorMessage": "查询失败"
+    },
+    {
+      "command": "notify-admin",
+      "description": "通知管理员",
+      "url": "https://webhook.example.com/admin/notify",
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "type": "user_request",
+        "user": {
+          "qq": "{QQ}",
+          "source": "koishi-bot"
+        },
+        "message": "用户 {QQ} 请求管理员协助",
+        "timestamp": "{{timestamp}}"
+      },
+      "successMessage": "已通知管理员",
+      "errorMessage": "通知发送失败"
+    },
+    {
+      "command": "test-webhook",
+      "description": "测试webhook连接",
+      "url": "https://httpbin.org/post",
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json",
+        "User-Agent": "Koishi-Webhook-Sender"
+      },
+      "body": {
+        "test": true,
+        "qq": "{QQ}",
+        "message": "这是一个测试请求"
+      },
+      "timeout": 3000,
+      "successMessage": "测试成功！webhook连接正常",
+      "errorMessage": "测试失败，请检查网络连接"
+    }
+  ],
+  "globalTimeout": 5000,
+  "enableLogging": true
+} 

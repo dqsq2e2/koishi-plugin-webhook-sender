@@ -1,0 +1,55 @@
+{
+  "name": "koishi-plugin-webhook-sender",
+  "description": "根据指令发送 Webhook 请求，支持自定义指令和接口地址，支持 {QQ} 参数替换",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "contributors": [
+    "Mcayear <mcayear@163.com>",
+    "Xeu <i@xeu.life>",
+    "dqsq2e2"
+  ],
+  "homepage": "https://github.com/dqsq2e2/koishi-plugin-webhook-sender",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dqsq2e2/koishi-plugin-webhook-sender.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dqsq2e2/koishi-plugin-webhook-sender/issues"
+  },
+  "koishi": {
+    "description": {
+      "zh": "根据指令发送 Webhook 请求，支持自定义指令和接口地址，支持 {QQ} 参数替换"
+    },
+    "locales": ["zh"]
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "pub": "npm publish"
+  },
+  "license": "MIT",
+  "keywords": [
+    "webhook",
+    "koishi",
+    "plugin",
+    "sender",
+    "command",
+    "http",
+    "request"
+  ],
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "peerDependencies": {
+    "koishi": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^5.0.0",
+    "koishi": "^4.17.1"
+  }
+}
