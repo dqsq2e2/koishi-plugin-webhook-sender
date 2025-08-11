@@ -1,76 +1,168 @@
 {
   "webhooks": [
     {
-      "command": "sign",
-      "description": "每日签到",
-      "url": "https://api.example.com/daily-sign",
+      "command": "transfer",
+      "description": "转账操作",
+      "url": "https://api.example.com/transfer",
       "method": "POST",
       "headers": {
         "Content-Type": "application/json",
         "Authorization": "Bearer your-api-token",
-        "X-User-QQ": "{QQ}"
+        "X-User-QQ": "{QQ}",
+        "X-User-Token": "{token}",
+        "X-Reason": "{reason}"
       },
       "body": {
-        "user_id": "{QQ}",
-        "action": "daily_sign",
-        "platform": "qq"
+        "from_user": "{QQ}",
+        "to_user": "{target}",
+        "amount": "{amount}",
+        "reason": "{reason}"
       },
-      "timeout": 5000,
-      "successMessage": "签到成功！",
-      "errorMessage": "签到失败，请稍后重试"
+      "defaultParameters": [
+        {
+          "name": "target",
+          "description": "转账目标用户ID",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "description": "转账金额",
+          "required": true
+        },
+        {
+          "name": "reason",
+          "description": "转账原因",
+          "required": false,
+          "defaultValue": "无备注"
+        }
+      ],
+      "inputParameters": [
+        {
+          "name": "token",
+          "option": "t",
+          "description": "用户令牌",
+          "required": false
+        }
+      ],
+      "platform": "onebot",
+      "botId": "123456789",
+      "successCodes": [200, 201],
+      "successMessage": "转账成功！\n转账给：{recipient.name}\n金额：{amount}元\n余额：{balance}元",
+      "errorMessage": "转账失败：{error}"
     },
     {
-      "command": "check-status",
-      "description": "查看用户状态",
-      "url": "https://api.example.com/user/{QQ}/status",
+      "command": "query-user",
+      "description": "查询用户信息",
+      "url": "https://api.example.com/user/{QQ}/info",
       "method": "GET",
-      "headers": {
-        "X-Api-Key": "your-api-key"
-      },
       "body": {
-        "format": "json",
-        "include_details": true
+        "target_user": "{parameter}",
+        "include_details": "true"
       },
-      "successMessage": "状态查询成功",
-      "errorMessage": "查询失败"
+      "defaultParameters": [
+        {
+          "name": "parameter",
+          "description": "要查询的用户ID",
+          "required": false,
+          "defaultValue": "{QQ}"
+        }
+      ],
+      "platform": "kook",
+      "successCodes": [200],
+      "successMessage": "查询成功！\n用户：{user.name}\n等级：{user.level}\n积分：{user.points}",
+      "errorMessage": "查询失败：{error}"
     },
     {
-      "command": "notify-admin",
-      "description": "通知管理员",
-      "url": "https://webhook.example.com/admin/notify",
+      "command": "send-gift",
+      "description": "发送礼物",
+      "url": "https://api.example.com/gift/send",
       "method": "POST",
       "headers": {
         "Content-Type": "application/json"
       },
       "body": {
-        "type": "user_request",
-        "user": {
-          "qq": "{QQ}",
-          "source": "koishi-bot"
-        },
-        "message": "用户 {QQ} 请求管理员协助",
-        "timestamp": "{{timestamp}}"
+        "from": "{QQ}",
+        "to": "{recipient}",
+        "gift_type": "{gift}",
+        "quantity": "{count}",
+        "message": "{message}"
       },
-      "successMessage": "已通知管理员",
-      "errorMessage": "通知发送失败"
+      "defaultParameters": [
+        {
+          "name": "recipient",
+          "description": "礼物接收者",
+          "required": true
+        },
+        {
+          "name": "gift",
+          "description": "礼物类型",
+          "required": false,
+          "defaultValue": "flower"
+        },
+        {
+          "name": "count",
+          "description": "数量",
+          "required": false,
+          "defaultValue": "1"
+        }
+      ],
+      "inputParameters": [
+        {
+          "name": "message",
+          "option": "m",
+          "description": "赠送留言",
+          "required": false,
+          "defaultValue": "送你一份小礼物"
+        }
+      ],
+      "botId": "987654321",
+      "successCodes": [200, 202],
+      "successMessage": "礼物发送成功！\n收件人：{recipient_name}\n礼物：{gift} x{count}",
+      "errorMessage": "发送失败：{error}"
     },
     {
-      "command": "test-webhook",
-      "description": "测试webhook连接",
-      "url": "https://httpbin.org/post",
+      "command": "sign",
+      "description": "每日签到",
+      "url": "https://api.example.com/daily-sign",
       "method": "POST",
-      "headers": {
-        "Content-Type": "application/json",
-        "User-Agent": "Koishi-Webhook-Sender"
-      },
       "body": {
-        "test": true,
-        "qq": "{QQ}",
-        "message": "这是一个测试请求"
+        "user_id": "{QQ}",
+        "action": "daily_sign",
+        "location": "{parameter}"
       },
-      "timeout": 3000,
-      "successMessage": "测试成功！webhook连接正常",
-      "errorMessage": "测试失败，请检查网络连接"
+      "defaultParameters": [
+        {
+          "name": "parameter",
+          "description": "签到地点",
+          "required": false,
+          "defaultValue": "默认地点"
+        }
+      ],
+      "platform": "telegram",
+      "botId": "1122334455",
+      "successCodes": [200],
+      "successMessage": "签到成功！\n地点：{parameter}\n连续签到：{days}天\n获得积分：{points}",
+      "errorMessage": "签到失败：{error}"
+    },
+    {
+      "command": "calc",
+      "description": "简单计算器",
+      "url": "https://api.example.com/calculate",
+      "method": "POST",
+      "body": {
+        "expression": "{expr}",
+        "user": "{QQ}"
+      },
+      "defaultParameters": [
+        {
+          "name": "expr",
+          "description": "计算表达式",
+          "required": true
+        }
+      ],
+      "successCodes": [200],
+      "successMessage": "计算结果：{expr} = {result}",
+      "errorMessage": "计算失败：{error}"
     }
   ],
   "globalTimeout": 5000,
